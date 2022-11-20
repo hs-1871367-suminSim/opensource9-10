@@ -1,0 +1,102 @@
+## 불용어 제거 NLTK 오픈소스 라이브러리
+
+
+- 불용어란 분석에 큰 의미가 없는 문맥적으로 큰 의미가 없는 단어들을 말한다.  
+이런 불용어는 텍스트에 빈번하게 나타나므로 전처리 과정에서 중요한 단어로 인지될 수 있다.  
+하지만 실질적으로는 중요한 단어가 아니므로 사전에 제거해줘야 한다. 
+- nltk 라이브러리에서 nltk.download('stopwords')를 이용하여 영어 불용어를 가져올 수 있다. 
+
+#### 용도
+
+- Mood Station은 노래 가사를 분석해 사용자가 원하는 분위기에 맞는 노래를 추천 및 제공하는 시스템이다.  
+- 태그별로 노래들을 나누기 위해서는 DB에서 가져온 가사를 자연어 처리 KoNLPy를 이용하여 전처리 과정이 필요하다.
+- 전처리된 데이터를 태그별로 쉽게 분류하기 위해서는 필요 없는 단어들을 추가로 제거해줘야 한다.
+- 불용어 제거 NLTK 라이브러리를 이용하여 추가로 제거해준다.
+
+#### 영어 불용어 리스트
+
+
+	['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves'
+    'you', "you're", "you've", "you'll", "you'd", 'your', 'yours'
+    'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she'
+    "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself'
+    'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which'
+    'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am'
+    'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has'
+    'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the'
+    'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of'
+    'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into'
+    'through', 'during', 'before', 'after', 'above', 'below', 'to'
+    'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under'
+    'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where'
+    'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most'
+    'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same'
+    'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don'
+    "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're'
+    've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn'
+    "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't"
+    'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't"
+    'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn'
+    "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't"
+    'wouldn', "wouldn't"]
+    
+#### 불용어 제거하기
+
+
+	from nltk.corpus import stopwords 
+	from nltk.tokenize import word_tokenize 
+    
+	example = "Family is not an important thing. It's everything."
+	stop_words = set(stopwords.words('english')) 
+    
+	word_tokens = word_tokenize(example)
+    
+	result = []
+	for token in word_tokens: 
+	    if token not in stop_words: 
+	        result.append(token) 
+	print(word_tokens) 
+	print(result)
+- 결과
+
+
+	['Family', 'is', 'not', 'an', 'important', 'thing', '.', 'It', "'s", 'everything', '.']
+	['Family', 'important', 'thing', '.', 'It', "'s", 'everything', '.']
+    
+    
+#### 한국어 불용어
+
+- 한국어의 경우 토큰화 단계에서 조사나, 접속사를 제거하면 됨으로 따로 정해진 불용어가 없다.  
+하지만 필요없는 명사나 형용사를 제거하기 위해서는 직접 만든 불용어 리스트를 이용하여 제거하면 된다.
+- 해당 링크에서는 일반적으로 사용되는 한국어 불용어 리스트를 보여준다.  
+<https://www.ranks.nl/stopwords/korean>  
+
+
+#### 불용어 제거하기
+
+    from nltk.corpus import stopwords 
+    from nltk.tokenize import word_tokenize 
+    
+	example = "NTLK는 한국어 불용어 데이터를 제공하지 않습니다. 왜냐하면 토큰화 단계에서 필요없는 조사, 접속사를 제거하면 되기 때문입니다."
+	stop_words = "않습니다 왜냐하면 되기"
+
+	word_tokens = word_tokenize(example)
+	stop_words=stop_words.split(' ')
+
+	result = [] 
+	for w in word_tokens: 
+	    if w not in stop_words: 
+	        result.append(w) 
+
+	print(word_tokens,'\n') 
+	print(result)
+
+- 결과
+
+
+	['NTLK는', '한국어', '불용어', '데이터를', '제공하지', '않습니다', '.', '왜냐하면', '토큰화', '단계에서', '필요없는', '조사', ',', '접속사를', '제거하면', '되기', '때문입니다', '.'] 
+
+	['NTLK는', '한국어', '불용어', '데이터를', '제공하지', '.', '토큰화', '단계에서', '필요없는', '조사', ',', '접속사를', '제거하면', '때문입니다', '.']
+
+
+    
