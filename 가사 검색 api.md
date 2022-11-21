@@ -64,7 +64,7 @@ page\_size
 
 
 
-\*가사를 가져오는 기능 - track.lyrics.get 
+가사를 가져오는 기능 - track.lyrics.get 
 
 웹사이트용 자바스크립트 스크립트
 
